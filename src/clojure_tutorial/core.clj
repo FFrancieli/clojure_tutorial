@@ -1,7 +1,9 @@
 (ns clojure-tutorial.core)
 
 (defn example-handler [request]
-  {:body (java.io.File. "test.txt")})
+  {:headers {"Location" "https://github.com/ring-clojure/ring"
+           "Set-cookie" "test=1"}
+    :status 301})
 (defn on-init[]
   println "Initializing sample web app...")
 
