@@ -6,4 +6,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [ring "1.2.0"]]
 
-  :plugins      [[lein-ring "0.8.7"]])
+  :plugins      [[lein-ring "0.8.7"]]
+  :ring [ :handler clojure_tutorial.core/example-handler
+          :init    clojure_tutorial.core/on-init
+          :destroy clojure_tutorial.core/on-destroy])
