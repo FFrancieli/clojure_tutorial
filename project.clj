@@ -7,6 +7,6 @@
                  [ring "1.2.0"]]
 
   :plugins      [[lein-ring "0.8.7"]]
-  :ring         { :handler clojure-tutorial.core/example-handler
+  :ring         { :handler clojure-tutorial.core/route-handler
                   :init    clojure-tutorial.core/on-init
                   :destroy clojure-tutorial.core/on-destroy})
