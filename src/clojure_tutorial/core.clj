@@ -1,8 +1,7 @@
 (ns clojure-tutorial.core)
 
-(defn example-handler [{:keys [uri] :as uri}]
-  {:body (str "uri is: " uri)})
-
+(defn example-handler [request]
+  {:body (java.io.File. "test.txt")})
 (defn on-init[]
   println "Initializing sample web app...")
 
