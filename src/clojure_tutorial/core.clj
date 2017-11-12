@@ -24,4 +24,7 @@
       "/test2" (test2-handler request)
       nil))
 
-
+(defn wrapping-handler [request]
+ (if-let [response (route-handler request)]
+  response
+  {:body (str "mapping not found for URI: " (:uri request)) :status 404}))
