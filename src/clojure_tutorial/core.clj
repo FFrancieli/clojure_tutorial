@@ -18,6 +18,11 @@
   { :status 301
     :headers {"Location" "https://github.com/ring-clojure/ring"}})
 
+(defn simple-log-middleware [handler]
+  (fn [{:keys [uri] :as request}]
+    (println "request path: " uri)
+    (handler request)))
+
 (defn route-handler [request]
     (condp = (:uri request)
       "/test1" (test1-handler request)
@@ -28,3 +33,6 @@
  (if-let [response (route-handler request)]
   response
   {:body (str "mapping not found for URI: " (:uri request)) :status 404}))
+
+(def full-handler
+  (simple-log-middleware wrapping-handler))
