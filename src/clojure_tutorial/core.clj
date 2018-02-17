@@ -23,6 +23,11 @@
     (println "request path: " uri)
     (handler request)))
 
+(defn not-found-middleware [handler]
+  (fn [request]
+    (or (handler request)
+      {:status 404 :body (str "not found - with middleware " (:uri request))})))
+
 (defn route-handler [request]
     (condp = (:uri request)
       "/test1" (test1-handler request)
@@ -35,4 +40,4 @@
   {:body (str "mapping not found for URI: " (:uri request)) :status 404}))
 
 (def full-handler
-  (simple-log-middleware wrapping-handler))
+  (not-found-middleware (simple-log-middleware route-handler)))
