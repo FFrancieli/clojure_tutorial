@@ -12,6 +12,7 @@
   println "destroying sample web app...")
 
 (defn test1-handler [request]
+  (throw (RuntimeException. "error!"))
   {:body "test1"})
 
 (defn test2-handler [request]
@@ -28,6 +29,17 @@
     (or (handler request)
       {:status 404 :body (str "not found - with middleware " (:uri request))})))
 
+(defn exception-middleware-fn [handler request]
+  (try (handler request)
+    (catch Throwable e
+    {
+      :status 500
+      :body (apply str (interpose "\n" (.getStackTrace e)))})))
+
+(defn wrap-exception-middleware [handler]
+  (fn [request]
+    (exception-middleware-fn handler request)))
+
 (defn route-handler [request]
     (condp = (:uri request)
       "/test1" (test1-handler request)
@@ -40,4 +52,7 @@
   {:body (str "mapping not found for URI: " (:uri request)) :status 404}))
 
 (def full-handler
-  (not-found-middleware (simple-log-middleware route-handler)))
+  (-> route-handler
+    not-found-middleware
+    wrap-exception-middleware
+    simple-log-middleware))
